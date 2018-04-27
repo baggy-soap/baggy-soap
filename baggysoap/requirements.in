@@ -1,0 +1,5 @@
+django<2.1
+dj_database_url
+pip-tools
+psycopg2-binary
+pytz

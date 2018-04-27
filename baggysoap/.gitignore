@@ -1,0 +1,7 @@
+venv
+_venv
+*.pyc
+.env
+staticfiles
+.DS_Store
+.cache
