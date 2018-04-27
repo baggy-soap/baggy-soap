@@ -1,7 +1,7 @@
 venv
 _venv
 *.pyc
-.env
+baggysoap/.env
 staticfiles
 .DS_Store
 .cache
