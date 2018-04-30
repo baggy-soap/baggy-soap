@@ -1,7 +1,14 @@
 venv
 _venv
 *.pyc
-baggysoap/.env
 staticfiles
 .DS_Store
 .cache
+.idea/
+.env
+
+# Database (this should not be required - should be using Postgres)
+db.sqlite3
+
+# Text backup files
+*.bak
