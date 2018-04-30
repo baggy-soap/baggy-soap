@@ -1,0 +1,1 @@
+web: gunicorn baggysoap.wsgi --log-file -
