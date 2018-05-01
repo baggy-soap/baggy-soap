@@ -2,6 +2,7 @@ django<2.1
 dj_database_url
 gunicorn
 pip-tools
+psycopg2
 psycopg2-binary
 pytz
 whitenoise
