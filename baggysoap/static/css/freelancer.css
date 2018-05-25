@@ -61,6 +61,11 @@ section h2 {
   line-height: 2rem;
 }
 
+section h3 {
+  font-size: 1.75rem;
+  line-height: 3rem;
+}
+
 @media (min-width: 992px) {
   section h2 {
     font-size: 3rem;
