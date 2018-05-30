@@ -211,7 +211,8 @@ MagnificPopup.prototype = {
 			mfp.st.closeOnContentClick = false;
 			mfp.st.closeOnBgClick = false;
 			mfp.st.showCloseBtn = false;
-			mfp.st.enableEscapeKey = false;
+			// Don't set this to false - we want escape key to close modal
+			// mfp.st.enableEscapeKey = false;
 		}
 		
 

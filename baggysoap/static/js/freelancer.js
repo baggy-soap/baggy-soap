@@ -49,13 +49,39 @@
   // Collapse the navbar when page is scrolled
   $(window).scroll(navbarCollapse);
 
+  // Changes to allow back button to close modal, as per:
+  // https://stackoverflow.com/questions/22229689/how-to-make-browser-back-close-magnific-popup
+  var magnificPopup = null;
+
   // Modal popup$(function () {
   $('.portfolio-item').magnificPopup({
     type: 'inline',
     preloader: false,
     focus: '#username',
-    modal: true
+    modal: true,
+    removalDelay: 100,
+    tClose: '',
+    callbacks: {
+        open: function () {
+            History.Adapter.bind(window, 'statechange', attemptToClosePopup);
+            History.pushState({ url: document.location.href }, document.title, "?productOpen");
+            $(window).on('resize', attemptToClosePopup);
+            magnificPopup = this;
+        },
+        close: function () {
+            $(window).unbind('statechange', attemptToClosePopup).off('resize', attemptToClosePopup);
+            History.replaceState(null, document.title, History.getState().data['url']);
+            magnificPopup = null;
+        }
+    }
   });
+
+  function attemptToClosePopup () {
+    if (magnificPopup != null) {
+        magnificPopup.close();
+    }
+  }
+
   $(document).on('click', '.portfolio-modal-dismiss', function(e) {
     e.preventDefault();
     $.magnificPopup.close();
