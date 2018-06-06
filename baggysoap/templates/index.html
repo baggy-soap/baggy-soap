@@ -43,13 +43,13 @@
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#products">Products</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a>
-            </li>
-            <li class="nav-item mx-0 mx-lg-1">
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#benefits">Benefits</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About Us</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -67,10 +67,28 @@
     </header>
 
     <!-- Portfolio Grid Section -->
-    <section class="portfolio" id="products">
+    <section class="portfolio text-secondary" id="products">
       <div class="container">
         <h2 class="text-center text-secondary mb-0">Products</h2>
         <hr class="star-dark mb-5">
+
+        <div class="row">
+          <div class="col-lg-4 ml-auto text-justify">
+            <p class="lead">Baggy Soap is a product borne out of a love for the environment and a desire to rid the
+            planet of plastic waste. There is so much focus on carrier bags, disposable cups and straws, yet so many
+            of us generate plastic waste every day in the bathroom, through using shower gel, hand wash and other
+            products in plastic bottles. We want to change that.</p>
+          </div>
+          <div class="col-lg-4 mr-auto text-justify">
+            <p class="lead">We have developed Baggy Soap to offer a superior cleaning experience, leaving both your
+            body and your conscience squeaky clean. Our cotton bags are 100% biodegradable and our handmade soaps have
+            been carefully chosen to work perfectly with our bags. We are committed to using no plastic and welcome
+            feedback from our customers.</p>
+          </div>
+        </div>
+
+        <hr class="star-dark mb-5">
+
         <div class="row">
           <div class="col-md-6 col-lg-4">
             <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-1">
@@ -133,45 +151,23 @@
             </a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="bg-primary text-white mb-0" id="about">
-      <div class="container">
-        <h2 class="text-center text-white">About</h2>
-        <hr class="star-light mb-5">
-        <div class="row">
-          <div class="col-lg-4 ml-auto">
-            <p class="lead">Baggy Soap is a product borne out of a love for the environment and a desire to rid the
-            planet of plastic waste. There is so much focus on carrier bags, disposable cups and straws, yet so many
-            of us generate plastic waste every day in the bathroom, through using shower gel, hand wash and other
-            products in plastic bottles. We want to change that.</p>
-          </div>
-          <div class="col-lg-4 mr-auto">
-            <p class="lead">We have developed Baggy Soap to offer a superior cleaning experience, leaving both your
-            body and your conscience squeaky clean. Our cotton bags are 100% biodegradable and our handmade soaps have
-            been carefully chosen to work perfectly with our bags. We are committed to using no plastic and welcome
-            feedback or suggestions from our customers.</p>
-          </div>
-        </div>
         <div class="text-center mt-4">
           <a class="btn btn-xl" href="#">
-            <img class="fa fa-download mr-2" src="{% static 'img/Amazon-button-UK-green-shadow.png' %}" alt="Buy now on Amazon">
+            <img class="fa fa-download mr-2" src="{% static 'img/Amazon-button-UK.png' %}" alt="Buy now on Amazon">
           </a>
         </div>
       </div>
     </section>
 
     <!-- Benefits Section -->
-    <section id="benefits">
+    <section class="bg-primary text-white mb-0" id="benefits">
       <div class="container">
-        <h2 class="text-center text-secondary mb-0">Benefits of Baggy Soap</h2>
-        <hr class="star-dark mb-5">
+        <h2 class="text-center text-white mb-0">Benefits of Baggy Soap</h2>
+        <hr class="star-light mb-5">
         <div class="row">
 
-          <div class="col-lg-8 mx-auto text-secondary">
-            <h3 class="text-secondary">Why soap?</h3>
+          <div class="col-lg-8 mx-auto text-white text-justify">
+            <h3>Why soap?</h3>
             <p class="lead">We pride ourselves on sourcing the finest handmade soaps for our customers. We work with
               local companies using the highest quality ingredients, to give the best possible washing experience.</p>
             <p class="lead">Here's why we believe soap is superior to shower gel:</p>
@@ -186,8 +182,8 @@
             </ul>
           </div>
           <div class="col-lg-8 mx-auto"><br/></div>
-          <div class="col-lg-8 mx-auto text-secondary">
-            <h3 class="text-secondary">Why a bag?</h3>
+          <div class="col-lg-8 mx-auto text-white text-justify">
+            <h3>Why a bag?</h3>
             <p class="lead">Using soap in a bag is a whole different washing experience to using soap without a bag.
               We think that you will agree once you give it a try!</p>
             <p class="lead">Here are a few reasons why to get you started:</p>
@@ -209,7 +205,66 @@ going mushy in the dish)</li>
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- About Us Section -->
+    <section class="text-secondary mb-0" id="about">
+      <div class="container">
+        <h2 class="text-center text-secondary">About Us</h2>
+        <hr class="star-dark mb-5">
+
+        <div class="col-lg-8 mx-auto text-secondary text-justify">
+          <h3>Our story</h3>
+          <p class="lead">It all started on a boat...</p>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil,
+            molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos
+            quod consequuntur itaque. Nam.</p>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil,
+            molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos
+            quod consequuntur itaque. Nam.</p>
+          <p class="lead">And ended with a Baggy Soap</p>
+        </div>
+        <div class="col-lg-8 mx-auto"><br/></div>
+        <div class="col-lg-8 mx-auto text-secondary text-justify">
+          <h3>Our values</h3>
+          <p class="lead">One of our main aims as a company is to have a minimal environmental impact. In cases where
+            we don't feel we've met our sustainability targets, we will always be completely honest about this, so
+            our customers know that we are doing everything possible to make it right.</p>
+          <h4>Bags</h4>
+          <p class="lead">Our original aim was to use bags manufactured in the UK, using natural, UK-sourced materials,
+            but this has proven to be an extremely difficult task. The cotton mesh fabric that we require for our bags
+            is not currently manufactured in the UK, and UK suppliers of similar fabrics are often importing them from
+            other countries themselves, such as Italy or China.</p>
+          <p class="lead">We found a UK manufacturer willing to make the bags for us if we supplied the material, but
+            at the last minute they retracted their offer due to ongoing staffing issues. We still hope to return to
+            this manufacturer when they have the capacity to supply us, but in the interim we needed to look
+            elsewhere.</p>
+          <p class="lead">Our bags are currently made in China using materials sourced from China, all of which are 100%
+            cotton, with the exception of the label on our current batch of bags. This means that customers wishing to
+            compost their bag should remove the polyester 'baggy soap' label before doing so. We are working with our
+            manufacturer to source cotton labels for our next batch of bags.</p>
+          <h4>Soap</h4>
+          <p class="lead">Our original aim was to use natural, handmade soaps that are manufactured in the UK, and
+            we have succeeded in this mission. However, we are learning as we go along and are currently on our fourth
+            soap supplier. It seems that the definition of 'natural' is subject to interpretation, so we are
+            working on defining our own standards in order to ensure that our products are kind to both skin and the
+            environment.</p>
+          <p class="lead">All our current soap ranges are SLS and Parabens free, and are vegan friendly. Some
+            are organic and they are all handmade in the UK. We have used suppliers from Cumbria, Bedfordshire and
+            Nottinghamshire, and are now working with a wonderful manufacturer based in Norfolk to supply our new range.
+            We provide the full ingredients of all products, so that customers are fully informed about what they are
+            buying.</p>
+          <h4>Packaging</h4>
+          <p class="lead">Our original aim was to use 100% recycled and recyclable packaging, containing no plastic
+            whatsoever. We are able to do this at present, by sourcing 100% recycled all board envelopes in which to
+            ship our products. We have found that the cotton bag works well to protect the soap inside, and replacement
+            soap bars without the bag seem to be faring well without plastic padding, too. However, we always want to
+            be informed if any products don't reach our customers in good condition, as we don't believe that anyone
+            should pay good money for damaged goods.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Contact Us Section -->
     <section class="bg-primary text-white mb-0"  id="contact">
       <div class="container">
         <h2 class="text-center text-white mb-0">Contact Us</h2>
