@@ -37,11 +37,11 @@ class SoapLoaf(models.Model):
     colour = models.CharField(max_length=64)
 
     ingredients = JSONField(default=list, blank=True, null=True)
-    weight = models.PositiveIntegerField(verbose_name="Weight (in kg)")
+    weight = models.DecimalField(decimal_places=2, max_digits=4, verbose_name="Weight (in kg)")
 
     #supplier
 
-    units = models.PositiveIntegerField()
+    units = models.DecimalField(decimal_places=2, max_digits=8)
     bars_per_loaf = models.PositiveIntegerField()
 
     cost_price = models.DecimalField(decimal_places=2, max_digits=4, help_text="Cost per loaf, including shipping")
