@@ -76,17 +76,9 @@ $ exit
 To install this project, follow these steps:
 
 ```
-$ mkvirtualenv --python=python3.6 baggy-soap
 $ git clone https://github.com/baggy-soap/baggy-soap.git
 $ cd baggy-soap/
 $ pip3 install -r requirements.txt
-$ sudo su - postgres
-$ psql
-# CREATE USER baggysoapdb WITH PASSWORD 'khAk8ZTguB4zS3';
-# CREATE DATABASE baggysoap;
-# GRANT ALL PRIVILEGES ON DATABASE baggysoap to baggysoapdb;
-# \q
-$ exit
 $ cp .env.example .env
 $ python manage.py migrate
 ```
@@ -108,3 +100,20 @@ $ python manage.py runserver
 
 Go to http://127.0.0.1:8000 to verify the website is running, 
 and http://127.0.0.1:8000/admin to test your login credentials.
+
+## Running Tests
+
+Currently all tests are nested under the "tests/" directory and mimics the current folder structure.
+The virtualenv needs to be enabled before running the tests.
+
+    $ python manage.py test -v 2
+
+**N.B.** You might need to give the db user `baggysoapdb` permission to create databases so that it can create the test database:
+
+```
+$ sudo su - postgres
+$ psqsl
+# ALTER USER zegodb CREATEDB;
+# \q
+$ exit
+```
