@@ -64,13 +64,16 @@ class SoapLoaf(models.Model):
 
 
 class SoapBar(models.Model):
-    loaf = models.ForeignKey(SoapLoaf, on_delete=models.CASCADE)
+    loaf = models.OneToOneField(SoapLoaf, on_delete=models.CASCADE)
 
     units = models.PositiveIntegerField()
 
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
     image = models.ImageField(blank=True, null=True, upload_to='soap_bars')
+
+    def __str__(self):
+        return self.loaf.name
 
     @property
     def cost_price(self):
@@ -88,8 +91,19 @@ class SoapBar(models.Model):
     def colour(self):
         return self.loaf.colour
 
-    def __str__(self):
-        return self.loaf.name
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            bars_being_added = self.units
+        else:
+            current_units = SoapBar.objects.get(id=self.pk).units
+            bars_being_added = self.units - current_units
+
+        if bars_being_added > 0:
+            number_of_loaves = self.loaf.units
+            amount_of_loaf_cut = Decimal(bars_being_added) / Decimal(self.loaf.bars_per_loaf)
+            self.loaf.units = Decimal(number_of_loaves) - Decimal(amount_of_loaf_cut)
+            self.loaf.save()
+        super(SoapBar, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Soap Bar'

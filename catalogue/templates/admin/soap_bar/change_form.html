@@ -1,0 +1,14 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+
+    <div class="form-row">
+        <div>
+            <label>Number of bars to add:</label>
+            <input type="number" name="add_quantity" />
+            <input type="submit" value="Add bars" name="add_bars">
+        </div>
+    </div>
+
+    {{ block.super }}
+{% endblock %}
