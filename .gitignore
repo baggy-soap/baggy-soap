@@ -12,3 +12,7 @@ db.sqlite3
 
 # Text backup files
 *.bak
+
+# Uploaded product image files
+/baggysoap/static/img/products/baggy_soaps/*
+/baggysoap/static/img/products/soap_bars/*

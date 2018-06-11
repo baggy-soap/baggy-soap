@@ -70,6 +70,8 @@ class SoapBar(models.Model):
 
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
+    image = models.ImageField(blank=True, null=True, upload_to='soap_bars')
+
     @property
     def cost_price(self):
         return round(Decimal(self.loaf.cost_price / self.loaf.bars_per_loaf), 2)
@@ -99,6 +101,8 @@ class BaggySoap(models.Model):
 
     units = models.PositiveIntegerField()
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
+
+    image = models.ImageField(blank=True, null=True, upload_to='baggy_soaps')
 
     @property
     def cost_price(self):

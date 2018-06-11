@@ -1,6 +1,7 @@
 django<2.1
 dj_database_url
 gunicorn
+Pillow
 pip-tools
 psycopg2
 psycopg2-binary
