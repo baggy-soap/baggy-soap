@@ -122,7 +122,8 @@ $ exit
 
 We use [`pip-tools`](https://github.com/jazzband/pip-tools) to manage Python dependencies.
 
-To add a new direct dependency, add it to `requirements.in` and run `pip-compile requirements.txt` will be recreated, pinning an exact version of the new package and all its dependencies.
+To add a new direct dependency, add it to `requirements.in` and run `pip-compile`. `requirements.txt` will be recreated, 
+pinning an exact version of the new package and all its dependencies.
 
 To upgrade a particular package to the latest, you can run (for example) `pip-compile -P celery`
 to regenerate a new `requirements.txt` with the latest package and valid dependencies while leaving
