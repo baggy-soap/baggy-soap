@@ -1,4 +1,6 @@
 from decimal import Decimal
+
+from django.db import IntegrityError
 from django.test import TestCase
 
 from catalogue.models import SoapLoaf, SoapBar, BaggySoap, Bag
@@ -53,6 +55,10 @@ class SoapBarTest(TestCase):
         bar.save()
         loaf.refresh_from_db()
         self.assertEqual(1.5, float(loaf.units))
+
+    def test_cannot_create_duplicate_soap_bar_object(self):
+        with self.assertRaises(IntegrityError):
+            SoapBar.objects.create(loaf=self.loaf, units=27, sell_price=2.99)
 
 
 class BaggySoapTest(TestCase):
@@ -131,3 +137,7 @@ class BaggySoapTest(TestCase):
         self.assertEqual(14, bar.units)
         bag.refresh_from_db()
         self.assertEqual(90, bag.units)
+
+    def test_cannot_create_duplicate_baggy_soap_object(self):
+        with self.assertRaises(IntegrityError):
+            BaggySoap.objects.create(bag=self.bag, soap=self.bar, units=20, sell_price=5.99)

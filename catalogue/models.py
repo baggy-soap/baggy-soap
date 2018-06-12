@@ -146,3 +146,4 @@ class BaggySoap(models.Model):
 
     class Meta:
         verbose_name = 'Baggy Soap'
+        unique_together = ('bag', 'soap')
