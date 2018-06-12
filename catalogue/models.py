@@ -130,5 +130,19 @@ class BaggySoap(models.Model):
     def soap_name(self):
         return self.soap.name
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            baggy_soaps_being_added = self.units
+        else:
+            current_units = BaggySoap.objects.get(id=self.pk).units
+            baggy_soaps_being_added = self.units - current_units
+
+        if baggy_soaps_being_added > 0:
+            self.bag.units = int(self.bag.units) - int(baggy_soaps_being_added)
+            self.bag.save()
+            self.soap.units = int(self.soap.units) - int(baggy_soaps_being_added)
+            self.soap.save()
+        super(BaggySoap, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Baggy Soap'

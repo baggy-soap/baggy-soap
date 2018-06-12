@@ -40,7 +40,6 @@ class SoapBarAdmin(admin.ModelAdmin):
         return super(SoapBarAdmin, self).change_view(request, object_id)
 
     def response_change(self, request, obj):
-        print(request.POST)
         if "add_bars" in request.POST:
             add_quantity = request.POST['add_quantity']
             obj.units += int(add_quantity)
@@ -54,6 +53,10 @@ class SoapBarAdmin(admin.ModelAdmin):
 class BaggySoapAdmin(admin.ModelAdmin):
     list_display = ('id', 'bag_name', 'soap_name', 'units', 'cost_price', 'sell_price')
     readonly_fields = ["image_display"]
+    fields = ('bag', 'soap', 'units', 'sell_price', 'image', 'image_display')
+
+    add_form_template = "admin/change_form.html"
+    change_form_template = "admin/baggy_soap/change_form.html"
 
     def image_display(self, obj):
         return mark_safe('<img src="/static/img/products/{name}" width="{width}" height={height} />'.format(
@@ -61,3 +64,19 @@ class BaggySoapAdmin(admin.ModelAdmin):
             width=obj.image.width,
             height=obj.image.height,
         ))
+
+    def add_view(self, request, form_url='', extra_context=None):
+        return super(BaggySoapAdmin, self).add_view(request)
+
+    def change_view(self, request, object_id, form_url='', extra_content=None):
+        self.readonly_fields.extend(['bag', 'soap', 'units'])
+        return super(BaggySoapAdmin, self).change_view(request, object_id)
+
+    def response_change(self, request, obj):
+        if "add_baggy_soaps" in request.POST:
+            add_quantity = request.POST['add_quantity']
+            obj.units += int(add_quantity)
+            obj.save()
+            self.message_user(request, "{} Baggy Soaps have been added".format(add_quantity))
+            return HttpResponseRedirect(".")
+        return super().response_change(request, obj)
