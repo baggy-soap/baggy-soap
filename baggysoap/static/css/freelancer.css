@@ -104,8 +104,6 @@ section h4 {
 }
 
 #mainNav {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   font-weight: 700;
   font-family: 'Montserrat';
 }
@@ -141,13 +139,6 @@ section h4 {
 }
 
 @media (min-width: 992px) {
-  #mainNav {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    -webkit-transition: padding-top 0.3s, padding-bottom 0.3s;
-    -moz-transition: padding-top 0.3s, padding-bottom 0.3s;
-    transition: padding-top 0.3s, padding-bottom 0.3s;
-  }
   #mainNav .navbar-brand {
     font-size: 2em;
     -webkit-transition: font-size 0.3s;
@@ -165,12 +156,21 @@ section h4 {
     color: #fff;
     background: #579393;
   }
-  #mainNav.navbar-shrink {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
   #mainNav.navbar-shrink .navbar-brand {
     font-size: 1.5em;
+  }
+  #mainNav .navbar-logo {
+    width: 75px;
+    height: 75px;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    -webkit-transition: width 0.3s, height 0.3s;
+    -moz-transition: width 0.3s, height 0.3s;
+    transition: width 0.3s, height 0.3s;
+  }
+  #mainNav.navbar-shrink .navbar-logo {
+    width: 55px;
+    height: 55px;
   }
 }
 
