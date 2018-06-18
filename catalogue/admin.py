@@ -89,7 +89,7 @@ class SoapBarAdmin(admin.ModelAdmin):
 
 @admin.register(BaggySoap)
 class BaggySoapAdmin(admin.ModelAdmin):
-    list_display = ('id', 'bag_name', 'soap_name', 'units', 'cost_price', 'sell_price')
+    list_display = ('id', 'name', 'bag_name', 'soap_name', 'units', 'cost_price', 'sell_price')
     readonly_fields = ["image_display"]
     fields = ('bag', 'soap', 'units', 'sell_price', 'image', 'image_display')
 

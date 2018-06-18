@@ -5,4 +5,5 @@ from transaction.models import Transaction
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'product_name', 'type', 'retailer', 'amount', 'payment_type')
+

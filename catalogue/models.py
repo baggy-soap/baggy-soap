@@ -1,11 +1,38 @@
 from decimal import Decimal
+
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.db.models.signals import post_save
 
 COLOURS = (
     ('65428A', 'Pantone Medium Purple U'),
     ('FFFFFF', 'White')
 )
+
+
+def create_product(instance, **kwargs):
+    """
+    Post save handler to create/update product instances when
+    Bag, SoapBar or BaggySoap is created/updated
+    """
+    content_type = ContentType.objects.get_for_model(instance)
+    try:
+        product = Product.objects.get(content_type=content_type,
+                                      object_id=instance.id)
+    except Product.DoesNotExist:
+        product = Product(content_type=content_type, object_id=instance.id)
+    product.save()
+
+
+class Product(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return '{}: {}'.format(self.content_type, self.content_object.name)
 
 
 class Bag(models.Model):
@@ -29,6 +56,11 @@ class Bag(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Bag'
+
+post_save.connect(create_product, sender=Bag)
 
 
 class SoapLoaf(models.Model):
@@ -108,6 +140,8 @@ class SoapBar(models.Model):
     class Meta:
         verbose_name = 'Soap Bar'
 
+post_save.connect(create_product, sender=SoapBar)
+
 
 class BaggySoap(models.Model):
     bag = models.ForeignKey(Bag, on_delete=models.CASCADE)
@@ -117,6 +151,9 @@ class BaggySoap(models.Model):
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
     image = models.ImageField(blank=True, null=True, upload_to='baggy_soaps')
+
+    def __str__(self):
+        return self.name
 
     @property
     def cost_price(self):
@@ -129,6 +166,10 @@ class BaggySoap(models.Model):
     @property
     def soap_name(self):
         return self.soap.name
+
+    @property
+    def name(self):
+        return '{} with {}'.format(self.bag_name, self.soap_name)
 
     def save(self, *args, **kwargs):
         if self.pk is None:
@@ -147,3 +188,5 @@ class BaggySoap(models.Model):
     class Meta:
         verbose_name = 'Baggy Soap'
         unique_together = ('bag', 'soap')
+
+post_save.connect(create_product, sender=BaggySoap)
