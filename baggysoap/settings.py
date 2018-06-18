@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalogue.apps.CatalogueConfig',
     'baggysoap.apps.BaggysoapConfig',
+    'transaction.apps.TransactionConfig',
 ]
 
 MIDDLEWARE = [
