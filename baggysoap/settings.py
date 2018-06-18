@@ -69,6 +69,7 @@ ALLOWED_HOSTS = [
     'baggy-soap-staging.herokuapp.com',
     'baggy-soap-production.herokuapp.com',
     '.baggysoap.co.uk',
+    '.baggysoap.com',
     'localhost',
 ]
 
