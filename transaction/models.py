@@ -25,8 +25,6 @@ PAYMENT_TYPES = (
 
 
 class Transaction(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
     type = models.CharField(max_length=32, choices=TRANSACTION_TYPES)
     retailer = models.CharField(max_length=32, choices=RETAILERS)
     description = models.TextField(blank=True)
@@ -34,5 +32,16 @@ class Transaction(models.Model):
     payment_type = models.CharField(max_length=32, choices=PAYMENT_TYPES)
 
     @property
-    def product_name(self):
-        return '{}'.format(self.product.content_object.name)
+    def number_of_items(self):
+        # TODO: Tidy this up
+        total = 0
+        for item in self.items.all():
+            total += item.quantity
+        return total
+
+
+class TransactionItem(models.Model):
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.DecimalField(decimal_places=2, max_digits=9)
+    quantity = models.PositiveIntegerField()

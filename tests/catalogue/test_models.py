@@ -1,9 +1,7 @@
-from decimal import Decimal
-
 from django.db import IntegrityError
 from django.test import TestCase
 
-from catalogue.models import SoapLoaf, SoapBar, BaggySoap, Bag
+from catalogue.models import SoapLoaf, SoapBar, BaggySoap, SoapBag
 
 
 class SoapBarTest(TestCase):
@@ -15,9 +13,6 @@ class SoapBarTest(TestCase):
 
     def test_cost_price_returns_expected_value(self):
         self.assertEquals(1.22, float(self.bar.cost_price))
-
-    def test_name_returns_loaf_name(self):
-        self.assertEquals(self.loaf.name, self.bar.name)
 
     def test_fragrance_returns_loaf_fragrance(self):
         self.assertEquals(self.loaf.fragrance, self.bar.fragrance)
@@ -67,10 +62,10 @@ class BaggySoapTest(TestCase):
         self.loaf = SoapLoaf.objects.create(name='Tea Tree Essential Oil', fragrance='Tea Tree', colour='Green',
                                             weight=1, units=5, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
         self.bar = SoapBar.objects.create(loaf=self.loaf, units=12, sell_price=4.99)
-        self.bag = Bag.objects.create(name='White and Purple', bag_colour='FFFFFF', bag_material='Cotton',
-                                      label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                      drawstring_colour='65428A', drawstring_material='Cotton', units='100',
-                                      cost_price=0.60)
+        self.bag = SoapBag.objects.create(name='White and Purple', bag_colour='FFFFFF', bag_material='Cotton',
+                                          label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                          drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                          cost_price=0.60)
         self.baggy_soap = BaggySoap.objects.create(bag=self.bag, soap=self.bar, units=10, sell_price=7.99)
 
     def test_cost_price_returns_expected_value(self):
@@ -86,10 +81,10 @@ class BaggySoapTest(TestCase):
         loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
                                        weight=1, units=2, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
         bar = SoapBar.objects.create(loaf=loaf, units=12, sell_price=4.99)
-        bag = Bag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
-                                 label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                 drawstring_colour='65428A', drawstring_material='Cotton', units='100',
-                                 cost_price=0.60)
+        bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
+                                     label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     cost_price=0.60)
         BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
         self.assertEqual(2, bar.units)
@@ -100,10 +95,10 @@ class BaggySoapTest(TestCase):
         loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
                                        weight=1, units=4, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
         bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
-        bag = Bag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
-                                 label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                 drawstring_colour='65428A', drawstring_material='Cotton', units='100',
-                                 cost_price=0.60)
+        bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
+                                     label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     cost_price=0.60)
         baggy_soap = BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
         self.assertEqual(14, bar.units)
@@ -121,10 +116,10 @@ class BaggySoapTest(TestCase):
         loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
                                        weight=1, units=4, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
         bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
-        bag = Bag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
-                                 label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                 drawstring_colour='65428A', drawstring_material='Cotton', units='100',
-                                 cost_price=0.60)
+        bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
+                                     label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     cost_price=0.60)
         baggy_soap = BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
         self.assertEqual(14, bar.units)

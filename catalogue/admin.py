@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
-from .models import Bag, SoapLoaf, BaggySoap, SoapBar
+from .models import SoapBag, SoapLoaf, BaggySoap, SoapBar
 
 
-@admin.register(Bag)
-class BagAdmin(admin.ModelAdmin):
+@admin.register(SoapBag)
+class SoapBagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'bag_colour', 'label_colour', 'drawstring_colour', 'units', 'cost_price')
 
 
@@ -86,6 +86,10 @@ class SoapBarAdmin(admin.ModelAdmin):
             return HttpResponseRedirect(".")
         return super().response_change(request, obj)
 
+    def save_model(self, request, obj, form, change):
+        obj.name = obj.loaf.name
+        obj.save()
+
 
 @admin.register(BaggySoap)
 class BaggySoapAdmin(admin.ModelAdmin):
@@ -118,3 +122,7 @@ class BaggySoapAdmin(admin.ModelAdmin):
             self.message_user(request, "{} Baggy Soaps have been added".format(add_quantity))
             return HttpResponseRedirect(".")
         return super().response_change(request, obj)
+
+    def save_model(self, request, obj, form, change):
+        obj.name = '{} with {}'.format(obj.bag_name, obj.soap_name)
+        obj.save()
