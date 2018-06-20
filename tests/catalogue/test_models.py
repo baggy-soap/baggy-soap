@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 
-from catalogue.models import SoapLoaf, SoapBar, BaggySoap, SoapBag
+from catalogue.models import SoapLoaf, SoapBar, BaggySoap, SoapBag, LowStockError
 
 
 class SoapBarTest(TestCase):
@@ -51,9 +51,21 @@ class SoapBarTest(TestCase):
         loaf.refresh_from_db()
         self.assertEqual(1.5, float(loaf.units))
 
+    def test_cannot_save_if_not_enough_loaf_to_create_bars(self):
+        loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
+                                       weight=1, units=1, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
+        with self.assertRaises(LowStockError) as cm:
+            SoapBar.objects.create(loaf=loaf, units=18, sell_price=4.99)
+        self.assertEqual(loaf, cm.exception.product)
+        self.assertEqual(1, cm.exception.amount_available)
+        self.assertEqual(1.5, cm.exception.amount_required)
+        # Check amount has not been reduced
+        loaf.refresh_from_db()
+        self.assertEqual(1, float(loaf.units))
+
     def test_cannot_create_duplicate_soap_bar_object(self):
         with self.assertRaises(IntegrityError):
-            SoapBar.objects.create(loaf=self.loaf, units=27, sell_price=2.99)
+            SoapBar.objects.create(loaf=self.loaf, units=5, sell_price=2.99)
 
 
 class BaggySoapTest(TestCase):
@@ -64,7 +76,7 @@ class BaggySoapTest(TestCase):
         self.bar = SoapBar.objects.create(loaf=self.loaf, units=12, sell_price=4.99)
         self.bag = SoapBag.objects.create(name='White and Purple', bag_colour='FFFFFF', bag_material='Cotton',
                                           label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                          drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                          drawstring_colour='65428A', drawstring_material='Cotton', units=100,
                                           cost_price=0.60)
         self.baggy_soap = BaggySoap.objects.create(bag=self.bag, soap=self.bar, units=10, sell_price=7.99)
 
@@ -83,7 +95,7 @@ class BaggySoapTest(TestCase):
         bar = SoapBar.objects.create(loaf=loaf, units=12, sell_price=4.99)
         bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
                                      label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units=100,
                                      cost_price=0.60)
         BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
@@ -97,7 +109,7 @@ class BaggySoapTest(TestCase):
         bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
         bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
                                      label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units=100,
                                      cost_price=0.60)
         baggy_soap = BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
@@ -118,7 +130,7 @@ class BaggySoapTest(TestCase):
         bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
         bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
                                      label_colour='65428A', label_material='Polyester', label_text='baggy soap',
-                                     drawstring_colour='65428A', drawstring_material='Cotton', units='100',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units=100,
                                      cost_price=0.60)
         baggy_soap = BaggySoap.objects.create(bag=bag, soap=bar, units=10, sell_price=7.99)
         bar.refresh_from_db()
@@ -133,6 +145,44 @@ class BaggySoapTest(TestCase):
         bag.refresh_from_db()
         self.assertEqual(90, bag.units)
 
+    def test_cannot_save_if_not_enough_bars_to_create_baggy_soaps(self):
+        loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
+                                       weight=1, units=4, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
+        bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
+        bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
+                                     label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units=100,
+                                     cost_price=0.60)
+        with self.assertRaises(LowStockError) as cm:
+            BaggySoap.objects.create(bag=bag, soap=bar, units=30, sell_price=7.99)
+        self.assertEqual(bar, cm.exception.product)
+        self.assertEqual(24, cm.exception.amount_available)
+        self.assertEqual(30, cm.exception.amount_required)
+        # Check amounts have not been reduced
+        bar.refresh_from_db()
+        self.assertEqual(24, bar.units)
+        bag.refresh_from_db()
+        self.assertEqual(100, bag.units)
+
+    def test_cannot_save_if_not_enough_bags_to_create_baggy_soaps(self):
+        loaf = SoapLoaf.objects.create(name='Lavender Essential Oil', fragrance='Lavender', colour='Purple',
+                                       weight=1, units=4, bars_per_loaf=12, list_price=9.99, cost_price=14.59)
+        bar = SoapBar.objects.create(loaf=loaf, units=24, sell_price=4.99)
+        bag = SoapBag.objects.create(name='All Purple', bag_colour='65428A', bag_material='Cotton',
+                                     label_colour='65428A', label_material='Polyester', label_text='baggy soap',
+                                     drawstring_colour='65428A', drawstring_material='Cotton', units=10,
+                                     cost_price=0.60)
+        with self.assertRaises(LowStockError) as cm:
+            BaggySoap.objects.create(bag=bag, soap=bar, units=20, sell_price=7.99)
+        self.assertEqual(bag, cm.exception.product)
+        self.assertEqual(10, cm.exception.amount_available)
+        self.assertEqual(20, cm.exception.amount_required)
+        # Check amounts have not been reduced
+        bar.refresh_from_db()
+        self.assertEqual(24, bar.units)
+        bag.refresh_from_db()
+        self.assertEqual(10, bag.units)
+
     def test_cannot_create_duplicate_baggy_soap_object(self):
         with self.assertRaises(IntegrityError):
-            BaggySoap.objects.create(bag=self.bag, soap=self.bar, units=20, sell_price=5.99)
+            BaggySoap.objects.create(bag=self.bag, soap=self.bar, units=2, sell_price=5.99)

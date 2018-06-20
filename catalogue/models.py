@@ -9,8 +9,22 @@ COLOURS = (
 )
 
 
+class LowStockError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        self.product = kwargs['product']
+        self.amount_available = kwargs['amount_available']
+        self.amount_required = kwargs['amount_required']
+
+    def __str__(self):
+        return "Product '%s' quantity is too low. Amount required: %s. Amount available: %s" % (str(self.product),
+                                                                                                self.amount_required,
+                                                                                                self.amount_available)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=64)
+    units = models.DecimalField(decimal_places=2, max_digits=8)
 
     def __str__(self):
         return '{}: {}'.format(self.subclass_verbose_name, self.name)
@@ -39,7 +53,6 @@ class SoapBag(Product):
 
     #supplier
 
-    units = models.PositiveIntegerField()
     cost_price = models.DecimalField(decimal_places=2, max_digits=4, help_text="Cost per bag, including shipping")
     sell_price = models.DecimalField(decimal_places=2, max_digits=4, null=True)
 
@@ -66,7 +79,7 @@ class SoapLoaf(Product):
     organic = models.BooleanField(default=False, verbose_name="Organic")
 
     weight = models.DecimalField(decimal_places=2, max_digits=4, verbose_name="Weight (in kg)")
-    units = models.DecimalField(decimal_places=2, max_digits=8)
+
     bars_per_loaf = models.PositiveIntegerField()
     list_price = models.DecimalField(decimal_places=2, max_digits=4, help_text="Cost per loaf, excluding shipping")
     cost_price = models.DecimalField(decimal_places=2, max_digits=4, help_text="Cost per loaf, including shipping")
@@ -77,8 +90,6 @@ class SoapLoaf(Product):
 
 class SoapBar(Product):
     loaf = models.OneToOneField(SoapLoaf, on_delete=models.CASCADE)
-
-    units = models.PositiveIntegerField()
 
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
@@ -107,6 +118,9 @@ class SoapBar(Product):
             number_of_loaves = self.loaf.units
             amount_of_loaf_cut = Decimal(bars_being_added) / Decimal(self.loaf.bars_per_loaf)
             self.loaf.units = Decimal(number_of_loaves) - Decimal(amount_of_loaf_cut)
+            if self.loaf.units < 0:
+                raise LowStockError(product=self.loaf, amount_available=number_of_loaves,
+                                    amount_required=amount_of_loaf_cut)
             self.loaf.save()
         super(SoapBar, self).save(*args, **kwargs)
 
@@ -118,7 +132,6 @@ class BaggySoap(Product):
     bag = models.ForeignKey(SoapBag, on_delete=models.CASCADE)
     soap = models.ForeignKey(SoapBar, on_delete=models.CASCADE)
 
-    units = models.PositiveIntegerField()
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
     image = models.ImageField(blank=True, null=True, upload_to='baggy_soaps')
@@ -143,9 +156,17 @@ class BaggySoap(Product):
             baggy_soaps_being_added = self.units - current_units
 
         if baggy_soaps_being_added > 0:
-            self.bag.units = int(self.bag.units) - int(baggy_soaps_being_added)
+            bags_available = self.bag.units
+            self.bag.units = int(bags_available) - int(baggy_soaps_being_added)
+            if self.bag.units < 0:
+                raise LowStockError(product=self.bag, amount_available=bags_available,
+                                    amount_required=baggy_soaps_being_added)
+            bars_available = self.soap.units
+            self.soap.units = int(bars_available) - int(baggy_soaps_being_added)
+            if self.soap.units < 0:
+                raise LowStockError(product=self.soap, amount_available=bars_available,
+                                    amount_required=baggy_soaps_being_added)
             self.bag.save()
-            self.soap.units = int(self.soap.units) - int(baggy_soaps_being_added)
             self.soap.save()
         super(BaggySoap, self).save(*args, **kwargs)
 

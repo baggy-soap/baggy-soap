@@ -33,11 +33,7 @@ class Transaction(models.Model):
 
     @property
     def number_of_items(self):
-        # TODO: Tidy this up
-        total = 0
-        for item in self.items.all():
-            total += item.quantity
-        return total
+        return sum(item.quantity for item in self.items.all())
 
 
 class TransactionItem(models.Model):
@@ -45,3 +41,19 @@ class TransactionItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=9)
     quantity = models.PositiveIntegerField()
+
+    def save(self, *args, **kwargs):
+        if self.transaction.type != 'return':
+            if self.pk is None:
+                items_being_added = self.quantity
+            else:
+                current_quantity = TransactionItem.objects.get(id=self.pk).quantity
+                items_being_added = self.quantity - current_quantity
+            self.product.units -= items_being_added
+            self.product.save()
+        super(TransactionItem, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.product.units += self.quantity
+        self.product.save()
+        super(TransactionItem, self).delete(*args, **kwargs)
