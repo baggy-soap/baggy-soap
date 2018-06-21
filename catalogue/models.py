@@ -93,7 +93,7 @@ class SoapBar(Product):
 
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
-    image = models.ImageField(blank=True, null=True, upload_to='soap_bars')
+    image_name = models.CharField(max_length=64, blank=True)
 
     @property
     def cost_price(self):
@@ -134,7 +134,7 @@ class BaggySoap(Product):
 
     sell_price = models.DecimalField(decimal_places=2, max_digits=4)
 
-    image = models.ImageField(blank=True, null=True, upload_to='baggy_soaps')
+    image_name = models.CharField(max_length=64, blank=True)
 
     @property
     def cost_price(self):

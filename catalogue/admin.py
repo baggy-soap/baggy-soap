@@ -58,17 +58,14 @@ class SoapLoafAdmin(admin.ModelAdmin):
 class SoapBarAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'fragrance', 'colour', 'units', 'cost_price', 'sell_price')
     readonly_fields = ["image_display"]
-    fields = ('loaf', 'units', 'sell_price', 'image', 'image_display')
+    fields = ('loaf', 'units', 'sell_price', 'image_name', 'image_display')
 
     add_form_template = "admin/change_form.html"
     change_form_template = "admin/soap_bar/change_form.html"
 
     def image_display(self, obj):
-        return mark_safe('<img src="/static/img/products/{name}" width="{width}" height="{height}" />'.format(
-            name=obj.image.name,
-            width=obj.image.width,
-            height=obj.image.height,
-        ))
+        if obj.image_name:
+            return mark_safe('<img src="/static/img/products/soap_bars/{name}" />'.format(name=obj.image_name))
 
     def add_view(self, request, form_url='', extra_context=None):
         return super(SoapBarAdmin, self).add_view(request)
@@ -95,17 +92,14 @@ class SoapBarAdmin(admin.ModelAdmin):
 class BaggySoapAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'bag_name', 'soap_name', 'units', 'cost_price', 'sell_price')
     readonly_fields = ["image_display"]
-    fields = ('bag', 'soap', 'units', 'sell_price', 'image', 'image_display')
+    fields = ('bag', 'soap', 'units', 'sell_price', 'image_name', 'image_display')
 
     add_form_template = "admin/change_form.html"
     change_form_template = "admin/baggy_soap/change_form.html"
 
     def image_display(self, obj):
-        return mark_safe('<img src="/static/img/products/{name}" width="{width}" height={height} />'.format(
-            name=obj.image.name,
-            width=obj.image.width,
-            height=obj.image.height,
-        ))
+        if obj.image_name:
+            return mark_safe('<img src="/static/img/products/baggy_soaps/{name}" />'.format(name=obj.image_name))
 
     def add_view(self, request, form_url='', extra_context=None):
         return super(BaggySoapAdmin, self).add_view(request)
