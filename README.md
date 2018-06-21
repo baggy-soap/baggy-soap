@@ -112,11 +112,64 @@ The virtualenv needs to be enabled before running the tests.
 
 ```
 $ sudo su - postgres
-$ psqsl
+$ psql
 # ALTER USER zegodb CREATEDB;
 # \q
 $ exit
 ```
+## Deployment to Heroku
+
+Before deploying to Heroku for the first time, you will need to add the remotes for staging and production, and login
+to Heroku.
+
+    $ git remote add staging https://git.heroku.com/baggy-soap-staging.git
+    $ git remote add production https://git.heroku.com/baggy-soap-production.git
+    $ heroku login
+
+This is the process for deploying a branch to Heroku (staging and production). If working on master directly, you can 
+simply push `master` to staging rather than `<branch>:master`
+
+    # Do due dilligence -------------------------------------------------------------
+    $ python manage.py makemigrations # Check not migrations are missing form the codebase
+    $ python manage.py test -v 2
+
+    # Release to staging ------------------------------------------------------------
+    $ heroku pg:backups capture --app baggy-soap-staging
+    $ git push staging <branch>:master
+
+    # Release to production ---------------------------------------------------------
+    $ git checkout master
+    $ git merge <branch>
+    $ heroku pg:backups capture --app baggy-soap-production
+    $ git push production master
+
+If you need to roll back due to a bad deployment/migration you can use the backup created before the push.
+NOTE: These rollback commands have not been tested, use with caution and update the README.
+
+    $ heroku rollback
+    $ heroku pg:backups restore <backup_name> DATABASE_URL --app baggy-soap-staging
+
+## Get a copy of the staging database
+
+Before pushing model changes to staging, it is wise to obtain a copy of the staging database and test the migrations
+locally. This is how to do so.
+
+    $ sudo su - postgres
+    $ /usr/lib/postgresql/10/bin/pg_dump <database_url> > staging.sql
+    $ createdb baggysoaps
+    $ psql baggysoaps < staging.sql
+    $ psql
+    # GRANT ALL PRIVILEGES ON DATABASE baggysoaps to baggysoapdb;
+    # \q
+
+    # Set extra privileges to prevent access errors --------------------------------
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to baggysoapdb;"
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to baggysoapdb;"
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to baggysoapdb;"
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA information_schema to baggysoapdb;"
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA information_schema to baggysoapdb;"
+    $ psql baggysoaps -c "GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA information_schema to baggysoapdb;"
+    $ exit
 
 ## Adding and upgrading Python dependencies
 
