@@ -136,12 +136,14 @@ simply push `master` to staging rather than `<branch>:master`
     # Release to staging ------------------------------------------------------------
     $ heroku pg:backups capture --app baggy-soap-staging
     $ git push staging <branch>:master
+    $ heroku run python manage.py migrate --app baggy-soap-staging
 
     # Release to production ---------------------------------------------------------
     $ git checkout master
     $ git merge <branch>
     $ heroku pg:backups capture --app baggy-soap-production
     $ git push production master
+    $ heroku run python manage.py migrate --app baggy-soap-production
 
 If you need to roll back due to a bad deployment/migration you can use the backup created before the push.
 NOTE: These rollback commands have not been tested, use with caution and update the README.
