@@ -130,10 +130,10 @@ class BaggySoapAdmin(admin.ModelAdmin):
         bag_admin_url = reverse('admin:catalogue_soapbag_change', args=[obj.bag.id])
         return mark_safe("<a href='{}'>{}</a>".format(bag_admin_url, obj.bag_name))
     bag_link.short_description = 'Bag name'
-    bag_link.admin_order_field = 'soapbag__name'
+    bag_link.admin_order_field = 'bag__name'
 
     def soap_link(self, obj):
         soap_admin_url = reverse('admin:catalogue_soapbar_change', args=[obj.soap.id])
         return mark_safe("<a href='{}'>{}</a>".format(soap_admin_url, obj.soap_name))
     soap_link.short_description = 'Soap name'
-    soap_link.admin_order_field = 'soapbar__name'
+    soap_link.admin_order_field = 'soap__name'
