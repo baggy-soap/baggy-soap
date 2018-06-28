@@ -13,6 +13,9 @@ class SoapBagAdmin(admin.ModelAdmin):
 
 @admin.register(SoapLoaf)
 class SoapLoafAdmin(admin.ModelAdmin):
+    class Media:
+        css = {'all': ('css/admin/soap_loaf_admin.css',)}
+
     list_display = ('id', 'name', 'fragrance', 'colour', 'weight', 'units', 'cost_price')
     fields = (
         'name',
