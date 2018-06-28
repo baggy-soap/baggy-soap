@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
@@ -47,7 +48,7 @@ class SoapLoafAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         if "add_loaves" in request.POST:
             add_quantity = request.POST['add_quantity']
-            obj.units += int(add_quantity)
+            obj.units += Decimal(add_quantity)
             obj.save()
             self.message_user(request, "{} loaves of soap have been added".format(add_quantity))
             return HttpResponseRedirect(".")
