@@ -70,6 +70,10 @@ section h4 {
   line-height: 3rem;
 }
 
+section h6 {
+  line-height: 3rem;
+}
+
 @media (min-width: 992px) {
   section h2 {
     font-size: 3rem;
@@ -211,7 +215,6 @@ header.masthead h2 {
   position: relative;
   display: block;
   max-width: 25rem;
-  margin-bottom: 15px;
 }
 
 .portfolio .portfolio-item .portfolio-item-caption {
@@ -233,9 +236,6 @@ header.masthead h2 {
 @media (min-width: 576px) {
   .portfolio {
     margin-bottom: -30px;
-  }
-  .portfolio .portfolio-item {
-    margin-bottom: 30px;
   }
 }
 
