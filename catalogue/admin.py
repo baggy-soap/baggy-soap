@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.contrib import admin
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from .models import SoapBag, SoapLoaf, BaggySoap, SoapBar
@@ -94,7 +95,7 @@ class SoapBarAdmin(admin.ModelAdmin):
 
 @admin.register(BaggySoap)
 class BaggySoapAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'bag_name', 'soap_name', 'units', 'cost_price', 'sell_price')
+    list_display = ('id', 'name', 'bag_link', 'soap_link', 'units', 'cost_price', 'sell_price')
     readonly_fields = ["image_display"]
     fields = ('bag', 'soap', 'units', 'sell_price', 'image_name', 'image_display')
 
@@ -124,3 +125,15 @@ class BaggySoapAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.name = '{} with {}'.format(obj.bag_name, obj.soap_name)
         obj.save()
+
+    def bag_link(self, obj):
+        bag_admin_url = reverse('admin:catalogue_soapbag_change', args=[obj.bag.id])
+        return mark_safe("<a href='{}'>{}</a>".format(bag_admin_url, obj.bag_name))
+    bag_link.short_description = 'Bag name'
+    bag_link.admin_order_field = 'soapbag__name'
+
+    def soap_link(self, obj):
+        soap_admin_url = reverse('admin:catalogue_soapbar_change', args=[obj.soap.id])
+        return mark_safe("<a href='{}'>{}</a>".format(soap_admin_url, obj.soap_name))
+    soap_link.short_description = 'Soap name'
+    soap_link.admin_order_field = 'soapbar__name'
