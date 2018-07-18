@@ -56,10 +56,13 @@
               <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#benefits">Benefits</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About Us</a>
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#faq">FAQ</a>
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact Us</a>
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a>
             </li>
           </ul>
         </div>
@@ -215,6 +218,72 @@ your own soap cocktails by mixing different scents!</li>
 going mushy in the dish)</li>
               <li>At the end of its life, the bag is fully compostable, unlike plastic shower gel bottles or shower puffs</li>
             </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="bg-primary text-white mb-0" id="faq">
+      <div class="container">
+        <h2 class="text-center text-white mb-0">Frequently Asked Questions</h2>
+        <hr class="star-light text-center mb-5">
+        <div class="faq-panel row">
+
+          <div class="faq col-lg-8 mx-auto text-white text-justify">
+            <h4 class="faq-title">Do I wash with the bag or is it just for storing my soap?
+                <a class="btn" data-toggle="collapse" href="#faq1">
+                    <i class="fa fa-fw fa-plus-square"></i>
+                </a>
+            </h4>
+            <div id="faq1" class="faq-answer collapse">
+              The idea is to wash with the bag, containing the soap, so that the cotton acts as a gentle exfoliant.
+              The bag helps the soap froth up more quickly too, as well as making it less slippery to hold.
+            </div>
+          </div>
+
+          <div class="faq col-lg-8 mx-auto text-white text-justify">
+            <h4 class="faq-title">How do I keep my soap from going soggy in the bag?
+                <a class="btn" data-toggle="collapse" href="#faq2">
+                    <i class="fa fa-fw fa-plus-square"></i>
+                </a>
+            </h4>
+            <div id="faq2" class="faq-answer collapse">
+              When you finish washing with your baggy soap, it is a good idea to hang the bag up straight away so it
+              can drip dry. We also find it can help to reshape your bag so it isn't scrunched up or clinging to the
+              soap. This allows the cotton and the soap to dry more easily.
+            </div>
+          </div>
+
+          <div class="faq col-lg-8 mx-auto text-white text-justify">
+            <h4 class="faq-title">What do I do when the soap is finished?
+                <a class="btn" data-toggle="collapse" href="#faq3">
+                    <i class="fa fa-fw fa-plus-square"></i>
+                </a>
+            </h4>
+            <div id="faq3" class="faq-answer collapse">
+              You can pop a new soap inside the bag straight away, or give your bag a rinse before re-filling it.
+              It's up to you! Once your soap is very small, you might wish to add a new one to it (making a soap
+              cocktail if you add a different fragrance!). However this isn't necessary as the beauty of Baggy Soap
+              is that it enables you to continue using soap right up until the end - and possibly even after the soap
+              has finished as there may be residue soap in the cotton that will still froth up. This reduces waste!
+            </div>
+          </div>
+
+          <div class="faq col-lg-8 mx-auto text-white text-justify">
+            <h4 class="faq-title">Can I put my bag in the washing machine?
+                <a class="btn" data-toggle="collapse" href="#faq4">
+                    <i class="fa fa-fw fa-plus-square"></i>
+                </a>
+            </h4>
+            <div id="faq4" class="faq-answer collapse">
+              You can. We have tested our bags on a standard 40 degree wash, using eco-friendly washing liquid, and they
+              come out fine. You may notice a slight amount of shrinkage in the bag itself, but this is to be expected
+              and it soon stretches back to its original size. However, be sure to remove your soap from the bag before
+              putting it in the washing machine, otherwise you may find you need another rinse at the end of the cycle
+              to get rid of all the extra soap suds!
+            </div>
           </div>
 
         </div>
@@ -635,6 +704,15 @@ going mushy in the dish)</li>
 
     <!-- Custom scripts for this template -->
     <script src="{% static 'js/freelancer.js' %}"></script>
+
+    <script>
+      $('.faq-title > a').click(function() {
+        $(this).find('i').toggleClass('fa-plus-square fa-minus-square')
+               .closest('faq-panel').siblings('faq-panel')
+               .find('i')
+               .removeClass('fa-minus-square').addClass('fa-plus-square');
+      });
+    </script>
 
   </body>
 
